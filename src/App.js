@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import RoomList from './components/RoomList.js';
-import MessageList from './components/MessageList';
+import MessageList from './components/MessageList.js';
+import User from './components/User.js'
 import * as firebase from 'firebase';
 
 
@@ -24,7 +25,9 @@ class App extends Component {
 
     this.state = {
       activeRoomName: "",
-      activeRoomId: ""
+      activeRoomId: "",
+      username: 'Guest',
+      isLoggedIn: false
     };
   }
 
@@ -49,33 +52,56 @@ class App extends Component {
      return formattedTime3;
    }
 
-    render() {
-        return (
-          <div className="app">
-            <section className="sidebar">
-               <header className="header">
-                  <h1 className="title">Bloc Chat</h1>
-               </header>
-               <RoomList
-                  firebase={firebase}
-                  className="roomList"
-                  activeRoomName={this.state.activeRoomName}
-                  activeRoomId={this.state.activeRoomId}
-                  activeRoomView={this.activeRoomView}
-                />
-               </section>
-               <section className="messageList">
-                <MessageList
-                  firebase={firebase}
-                  activeRoomName={this.state.activeRoomName}
-                  activeRoomId={this.state.activeRoomId}
-                  activeRoomView={this.activeRoomView}
-                  formatTime={this.formatTime}
-                />
-              </section>
-            </div>
-          );
-        }
+   setUser = (user) => {
+       const isLoggedIn = this.state.isLoggedIn;
+       if ( isLoggedIn === true) {
+         this.setState({
+           isLoggedIn: false,
+           username: 'Guest'
+         });
+       } else {
+         this.setState({
+           isLoggedIn: true,
+           username: user.displayName
+         });
+       }
      }
 
-export default App;
+     //Render RoomList
+     //Render MessageList
+     //Render User
+     render() {
+       return (
+         <div className="app">
+           <sidebar className="sidebar">
+             <header className="header">
+               <h1 className="title">Bloc Chat</h1>
+             </header>
+             <RoomList
+               firebase={firebase}
+               className="roomList"
+               activeRoomName={this.state.activeRoomName}
+               activeRoomId={this.state.activeRoomId}
+               activeRoomView={this.activeRoomView}
+             />
+           </sidebar>
+           <section className="messageList">
+             <User
+               firebase={firebase}
+               setUser={this.setUser}
+               username={this.state.username}
+             />
+             <MessageList
+               firebase={firebase}
+               activeRoomName={this.state.activeRoomName}
+               activeRoomId={this.state.activeRoomId}
+               activeRoomView={this.activeRoomView}
+               formatTime={this.formatTime}
+             />
+           </section>
+         </div>
+       );
+     }
+   }
+
+   export default App;
