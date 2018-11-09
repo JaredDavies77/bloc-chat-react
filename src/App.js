@@ -73,7 +73,7 @@ class App extends Component {
      render() {
        return (
          <div className="app">
-           <sidebar className="sidebar">
+           <aside className="sidebar">
              <header className="header">
                <h1 className="title">Bloc Chat</h1>
              </header>
@@ -84,7 +84,7 @@ class App extends Component {
                activeRoomId={this.state.activeRoomId}
                activeRoomView={this.activeRoomView}
              />
-           </sidebar>
+           </aside>
            <section className="messageList">
              <User
                firebase={firebase}
@@ -96,6 +96,8 @@ class App extends Component {
                activeRoomName={this.state.activeRoomName}
                activeRoomId={this.state.activeRoomId}
                activeRoomView={this.activeRoomView}
+               formatTime={this.formatTime}
+               username={this.state.username}
                formatTime={this.formatTime}
              />
            </section>
