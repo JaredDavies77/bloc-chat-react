@@ -24,7 +24,7 @@ class User extends Component {
     return (
       <section>
         <button onClick={(e) => this.handleSignOut(e)}>Sign Out</button>
-        <button onClick={(e) => this.handleSignIn(e)}>Sign In</button> 
+        <button onClick={(e) => this.handleSignIn(e)}>Sign In</button>
         <p>Logged in as {this.props.username}</p>
       </section>
     );
