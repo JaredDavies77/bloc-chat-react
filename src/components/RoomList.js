@@ -36,6 +36,12 @@ class RoomList extends Component {
     this.setState({ newRoomName: '' });
   }
 
+  deleteRoom(roomkey) {
+     this.roomsRef.child(roomkey).remove();
+     this.setState({rooms: this.state.rooms.filter((room)=> room.key !== roomkey)});
+     this.props.clearActive();
+   }
+
   handleClick(event) {
     let roomName = event.target.innerText;
     let roomId = '';
@@ -56,8 +62,11 @@ class RoomList extends Component {
         <tbody>
           {
             this.state.rooms.map( (room, index) =>
-              <tr className="room" key={index} onClick= { (e) => this.handleClick(e) }>
-                <td>{room.name}</td>
+              <tr className="room" key={index} >
+                <td>
+                  <button id="delete" onClick={()=> this.deleteRoom(room.key)} >delete</button>
+                  <span onClick= { (e) => this.handleClick(e) }>{room.name}</span>
+                </td>
               </tr>
             )
           }

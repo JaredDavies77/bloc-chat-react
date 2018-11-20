@@ -27,7 +27,8 @@ class App extends Component {
       activeRoomName: "",
       activeRoomId: "",
       username: 'Guest',
-      isLoggedIn: false
+      isLoggedIn: false,
+      user: "",
     };
   }
 
@@ -53,19 +54,25 @@ class App extends Component {
    }
 
    setUser = (user) => {
-       const isLoggedIn = this.state.isLoggedIn;
-       if ( isLoggedIn === true) {
-         this.setState({
-           isLoggedIn: false,
-           username: 'Guest'
-         });
-       } else {
-         this.setState({
-           isLoggedIn: true,
-           username: user.displayName
-         });
-       }
+     const isLoggedIn = this.state.isLoggedIn;
+     if ( user === null) {
+       this.setState({
+         isLoggedIn: false,
+         username: 'Guest',
+      });
+     } else {
+       this.setState({
+         isLoggedIn: true,
+         username: user.displayName,
+       });
      }
+   }
+
+   clearActive() {
+     this.setState({activeRoomId:"", activeRoomName:""});
+   }
+
+
 
      //Render RoomList
      //Render MessageList
@@ -80,6 +87,7 @@ class App extends Component {
              <RoomList
                firebase={firebase}
                className="roomList"
+               clearActive={()=>this.clearActive()}
                activeRoomName={this.state.activeRoomName}
                activeRoomId={this.state.activeRoomId}
                activeRoomView={this.activeRoomView}
@@ -88,8 +96,8 @@ class App extends Component {
            <section className="messageList">
              <User
                firebase={firebase}
-               setUser={this.setUser}
                username={this.state.username}
+               setUser={this.setUser}
              />
              <MessageList
                firebase={firebase}
